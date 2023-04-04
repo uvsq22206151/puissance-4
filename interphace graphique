@@ -1,0 +1,55 @@
+# essay puissance 4 interface graphique
+from tkinter import *
+
+root = Tk()
+
+# personnaliser le fenetre
+root.title("Interface graphique puissance 4")
+root.geometry("1080x720")
+root.config(background='darkblue')
+
+frame = Frame(root, bg='darkblue', bd=1, relief=SUNKEN)
+
+label_nom = Label(text="Heloise, Yasmine, Divya, Makcen ",
+                  font=("arial", 10),
+                  bg='darkblue',
+                  fg='white')
+label_nom.pack()
+label_title = Label(frame,
+                    text="Puissance 4",
+                    font=("arial", 40),
+                    bg='darkblue',
+                    fg='red')
+label_title.pack()
+
+label_subtitle = Label(frame,
+                       text="jouer une partie des puissance 4",
+                       font=("darkblue", 20),
+                       bg='darkblue',
+                       fg='red')
+label_subtitle.pack()
+
+# ajouter un bouton
+jouer_button = Button(frame,
+                      text="lancer une partie",
+                      font=("arial", 15),
+                      bg='red',
+                      fg='darkblue')
+jouer_button.pack(pady=25)
+
+continuer_button = Button(frame,
+                          text="continuer une partie",
+                          font=("arial", 15),
+                          bg='red',
+                          fg='darkblue')
+continuer_button.pack(pady=25)
+
+IA_button = Button(frame,
+                   text="jouer contre une IA",
+                   font=("arial", 15),
+                   bg='red',
+                   fg='darkblue')
+IA_button.pack(pady=25)
+
+frame.pack(expand=YES)
+root.mainloop()
