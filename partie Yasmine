@@ -1,1 +1,111 @@
+def sauvegarderPartie(p):
+    fichierDeSauvegarde = filedialog.asksaveasfilename(parent=root, title="Sauvez la manche sous...") 
+    f = open(fichierDeSauvegarde,'w')
+    f.write(Afficher(p))
+    f.close()
+    showinfo(title="Manche Sauvegarder", message="La manche est sauvegardÃ©e dans le fichier : "+fichierDeSauvegarde)
+    return None           
+    
+    
+    def jouer (canvas,quitter_button,couleur_joueur, choix_joueur, colonne_jouee): # un joueur joue
+    global coup_jouer
+    global vicPR
+    global vicPJ
+    
+    # Demande de confirmation pour annuler le coup
+    reponse = askokcancel("jouer", "Etes vous sÃ»r de vouloir jouer colonne "+colonne_jouee.get())
+    if reponse:
+        # La rÃ©ponse est confirmÃ©e
+        coup_jouer+=1
+        ligne = 1
+        pointJoue="J"
+        if couleur_joueur == 'red' :
+                pointJoue="R"
+        colonne = int(colonne_jouee.get())-1
+        ligne = JouerPossible(p,colonne,pointJoue,ligne)
+        if ligne > 0:
+            ajouterJeton(canvas,colonne,6-ligne,couleur_joueur)
+            if(Gagner(p)==PJ): #Victoire du joueur Jaune
+                vicPJ+=1
+                showinfo(title="Manche GagnÃ©", message="Le joueur jaune Ã  gagnÃ© la manche("+str(vicPJ)+" victoire(s) / "+str(manche)+")")
+                if(vicPJ>=manche): #Victoire final
+                    showinfo(title="Partie GagnÃ©", message="Le joueur jaune Ã  gagnÃ© la partie")
+                    canvas.destroy()
+                    quitter_button.destroy()
+                    lancerMenu()
+                else:
+                    canvas.destroy()
+                    quitter_button.destroy()
+                    plateauDeJeu (True)
+                
+            elif(Gagner(p)==PR): #Victoire du joueur Rouge             
+                vicPR+=1    
+                showinfo(title="aAnche GagnÃ©", message="Le joueur rouge Ã  gagnÃ© la manche ("+str(vicPR)+" victoire(s)/ "+str(manche)+")")
+                if(vicPR>=manche): #Victoire final
+                    showinfo(title="Partie GagnÃ©", message="Le joueur rouge Ã  gagnÃ© la partie")
+                    canvas.destroy()
+                    quitter_button.destroy()
+                    lancerMenu()
+                else:
+                    canvas.destroy()
+                    quitter_button.destroy()
+                    plateauDeJeu (True)
 
+            else: # pas de victoire la manche continue            
+                if coup_jouer>=42: #Le max de coup possible 
+                    showinfo(title="Manche nulle", message="EgalitÃ© : Aucun joueur de gagne la manche !")             
+                    canvas.destroy()
+                    quitter_button.destroy()
+                    plateauDeJeu (True)
+                else:
+                    if couleur_joueur == 'red' :
+                        couleur_joueur = 'yellow'
+                        choix_joueur = nomPJ
+                    else : 
+                        couleur_joueur = 'red'
+                        choix_joueur = nomPR
+                proposerJouer(canvas,quitter_button,choix_joueur,couleur_joueur)
+        else :
+            askretrycancel(message='La colonne est pleine',title='Erreur')
+            
+            def getNomPR(nomPR_entry,nomPR_button,label_nomPJ):
+    global nomPR
+    global choixNomR 
+    
+    nomPR = nomPR_entry.get()
+    label_nomPR_Rep= Label(root, text="Joueur rouge = "+nomPR, font=("arial" , 10), bg='darkblue' , fg='white') 
+    label_nomPR_Rep.pack() 
+    nomPR_entry.destroy()
+    nomPR_button.destroy()
+    label_nomPJ.destroy()   
+    choixNomR = True
+    if choixNomR and choixNomJ and choixManche :
+        plateauDeJeu (True)
+    
+def getNomPJ(nomPJ_entry,nomPJ_button,label_nomPJ):
+    global nomPJ
+    global choixNomJ 
+
+    nomPJ = nomPJ_entry.get()
+    label_nomPJ_Rep= Label(root, text="Joueur jaune = "+nomPJ, font=("arial" , 10), bg='darkblue' , fg='white') 
+    label_nomPJ_Rep.pack() 
+    nomPJ_entry.destroy()
+    nomPJ_button.destroy()
+    label_nomPJ.destroy()
+    choixNomJ = True
+    if choixNomR and choixNomJ and choixManche :
+        plateauDeJeu (True)
+
+def getManche(manche_entry,manche_button,label_manche):
+    global manche 
+    global choixManche
+
+    manche = int(manche_entry.get())
+    label_manche_Rep= Label(root, text=str(manche)+" Manche(s)", font=("arial" , 10), bg='darkblue' , fg='white') 
+    label_manche_Rep.pack()
+    manche_entry.destroy()
+    manche_button.destroy()
+    label_manche.destroy()
+    choixManche = True
+    if choixNomR and choixNomJ and choixManche :
+        plateauDeJeu (True)
