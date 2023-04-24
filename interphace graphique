@@ -1,6 +1,30 @@
 # Puissance 4 interface graphique
 import tkinter as tk
 from tkinter import *
+from tkinter.messagebox import *
+from tkinter import filedialog
+
+# Interface graphique
+def chargerJeu () : #pour charger le jeu a partir du nfichier
+    global p
+    win = Toplevel(root)
+    filetypes = (("text files", "*.txt"),("All files", "*.*"))
+    file_name = filedialog.askopenfilename(initialdir = "/",title = "Selectionnez le fichier",filetypes = filetypes)
+    f=open(file_name,"r")
+    p=[str(ligne.strip()) for ligne in f]
+    i:int
+    j:int
+    Ltmp:list[str]=[]
+    Lres:list[list[str]]=[]
+    for i in range(1,12,2):
+        for j in range(2,29,4):
+            Ltmp.append(p[i][j])
+        Lres.append(Ltmp)
+        Ltmp=[]
+    f.close()
+    p=Lres
+    plateauDeJeu (False)
+
 
 def lancerMenu () : 
     
@@ -13,10 +37,11 @@ def lancerMenu () :
     label_subtitle.pack()
 
     # ajouter les boutons
-    jouer_button= Button(frame, text="lancer une partie", font=("arial" , 15), bg='red' , fg='darkblue', command=lambda: [frame.destroy(), plateauDeJeu()])
+    jouer_button= Button(frame, text="lancer une partie", font=("arial" , 15), bg='red' , fg='darkblue', command=lambda: [frame.destroy(),lancerJeu()])
     jouer_button.pack(pady=25) 
 
-    continuer_button= Button(frame, text="continuer une partie", font=("arial" , 15), bg='red' , fg='darkblue')
+    continuer_button= Button(frame, text="continuer une partie", font=("arial" , 15), bg='red' , fg='darkblue', command=lambda: [frame.destroy(),chargerJeu()])
+    jouer_button.pack(pady=25) 
     continuer_button.pack(pady=25) 
 
     quitter_button= Button(frame, text="quitter", font=("arial" , 15), bg='red' , fg='darkblue', command=quit)
@@ -24,51 +49,19 @@ def lancerMenu () :
     
     frame.pack(expand=YES)
 
-def vider_frame():
-    for element in frame.winfo_children():
-        element.pack_forget() 
+    def proposerJouer(canvas,quitter_button,choix_joueur,couleur_joueur): 
+        global coup_jouer
+        cmd = root.register(lambda s: not s or s.isdigit()) #La valeur saisie doit être un entier
+        jouer_label = Label(root, text="Le joueur "+choix_joueur+" doit choisir une colonne entre 1 a 7 : ", font=("arial" , 15))
+        canvas.create_window(250, 20, window=jouer_label)
+        colonne_jouer = Entry(root, font=("arial" , 15), validate="key", vcmd=(cmd, "%P"))
+        canvas.create_window(500, 20, window=colonne_jouer, width=30)
+        jouer_button= Button(text='Jouer', font=("arial" , 15), bg=couleur_joueur , fg='darkblue', command=lambda: [jouer(canvas,quitter_button,couleur_joueur,choix_joueur,colonne_jouer)])
+        canvas.create_window(570, 20, window=jouer_button)
 
-def ajouterJeton(colonne, ligne,couleur):
+def ajouterJeton(canvas,colonne, ligne,couleur):
     o = canvas.create_oval(130+colonne*constante,80+ligne*constante,190+colonne*constante,140+ligne*constante, fill=couleur)
     canvas.move(o, 20, 20)
-
-def plateauDeJeu ():
-    
-    canvas = Canvas(root, width=800, height=650)
-    canvas.pack()
-    a = canvas.create_rectangle(100, 50, 700, 600, fill='blue')
-    canvas.move(a, 20, 20)
-    
-    for colonne in range(7):
-        for ligne in range(6):
-            o = canvas.create_oval(130+colonne*constante,80+ligne*constante,190+colonne*constante,140+ligne*constante, fill='white')
-            canvas.move(o, 20, 20)
-
-    ajouterJeton(4,4,"red")
-    
-    quitter_button= Button(root, text="quitter la partie", font=("arial" , 15), bg='red' , fg='darkblue', command=lambda: [quitter_button.destroy(),canvas.destroy(), lancerMenu()])
-    quitter_button.pack()
-
-    ligne=5
-    colonne=1
-    o = canvas.create_oval(130+colonne*constante,80+ligne*constante,190+colonne*constante,140+ligne*constante, fill="red")
-    canvas.move(o, 20, 20)
-    
-    ligne=5
-    colonne=2
-    o = canvas.create_oval(130+colonne*constante,80+ligne*constante,190+colonne*constante,140+ligne*constante, fill="yellow")
-    canvas.move(o, 20, 20)
-
-  
-
-def ajouterJeton(colonne, ligne,couleur):
-    o = canvas.create_oval(130+colonne*constante,80+ligne*constante,190+colonne*constante,140+ligne*constante, fill=couleur)
-    canvas.move(o, 20, 20)
-
-
-root = Tk() 
-constante = 80
-
 # personnaliser la fenêtre 
 root.title("Interface graphique puissance 4") 
 root.geometry("1080x720") 
@@ -80,6 +73,14 @@ frame = Frame()
 label_nom= Label( text="Heloise, Yasmine, Divya, Makcen ", font=("arial" , 10), bg='darkblue' , fg='white') 
 label_nom.pack() 
 
+
+nomPR = "Rouge"
+choixNomR = False
+nomPJ = "Jaune"
+choixNomJ = False
+manche:int = 1
+choixManche = False
+
 lancerMenu()
 
-root.mainloop() 
+root.mainloop()
