@@ -5,7 +5,7 @@ def sauvegarderPartie(p):
     f = open(fichierDeSauvegarde,'w')
     f.write(Afficher(p))
     f.close()
-    showinfo(title="Manche Sauvegarder", message="La manche est sauvegardÃ©e dans le fichier : "+fichierDeSauvegarde)
+    showinfo(title="Manche Sauvegarder", message="La manche est sauvegarder dans le fichier : "+fichierDeSauvegarde)
     return None           
     
     def jouer (canvas,quitter_button,couleur_joueur, choix_joueur, colonne_jouee): # un joueur joue
@@ -14,7 +14,7 @@ def sauvegarderPartie(p):
     global vicPJ
     
     # Demande de confirmation pour annuler le coup
-    reponse = askokcancel("jouer", "Etes vous sÃ»r de vouloir jouer colonne "+colonne_jouee.get())
+    reponse = askokcancel("jouer", "Etes vous sur de vouloir jouer colonne "+colonne_jouee.get())
     if reponse:
         # La rÃ©ponse est confirmÃ©e
         coup_jouer+=1
@@ -28,9 +28,9 @@ def sauvegarderPartie(p):
             ajouterJeton(canvas,colonne,6-ligne,couleur_joueur)
             if(Gagner(p)==PJ): #Victoire du joueur Jaune
                 vicPJ+=1
-                showinfo(title="Manche GagnÃ©", message="Le joueur jaune Ã  gagnÃ© la manche("+str(vicPJ)+" victoire(s) / "+str(manche)+")")
+                showinfo(title="Manche Gagne", message="Le joueur jaune Ã  gagnÃ© la manche("+str(vicPJ)+" victoire(s) / "+str(manche)+")")
                 if(vicPJ>=manche): #Victoire final
-                    showinfo(title="Partie GagnÃ©", message="Le joueur jaune Ã  gagnÃ© la partie")
+                    showinfo(title="Partie Gagne", message="Le joueur jaune Ã  gagnÃ© la partie")
                     canvas.destroy()
                     quitter_button.destroy()
                     lancerMenu()
@@ -41,9 +41,9 @@ def sauvegarderPartie(p):
                 
             elif(Gagner(p)==PR): #Victoire du joueur Rouge             
                 vicPR+=1    
-                showinfo(title="aAnche GagnÃ©", message="Le joueur rouge Ã  gagnÃ© la manche ("+str(vicPR)+" victoire(s)/ "+str(manche)+")")
+                showinfo(title="aAnche GagnÃ©", message="Le joueur rouge Ã  gagne la manche ("+str(vicPR)+" victoire(s)/ "+str(manche)+")")
                 if(vicPR>=manche): #Victoire final
-                    showinfo(title="Partie GagnÃ©", message="Le joueur rouge Ã  gagnÃ© la partie")
+                    showinfo(title="Partie Gagne", message="Le joueur rouge Ã  gagne la partie")
                     canvas.destroy()
                     quitter_button.destroy()
                     lancerMenu()
