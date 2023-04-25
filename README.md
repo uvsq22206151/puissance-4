@@ -1,8 +1,8 @@
 BI TD01 
-BLIN Héloïse
-BATOUCHE Makcen
-KAMALODine Yasmine
-SELVARAJU Divya
+BLIN Héloïse 22206151
+BATOUCHE Makcen 22203838
+KAMALODine Yasmine 22205628
+SELVARAJU Divya 22204888
 
 
 # puissance_4
